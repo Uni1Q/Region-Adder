@@ -111,7 +111,7 @@ def run():
     print("Intermediate-region  (Caribbean)         [8]")
     print("Region Code          (009)               [9]")
     print("Sub-Region Code      (154)               [10]")
-    print("Quit             (Quit)              [0]\n")
+    print("Quit                 (Quit)              [0]\n")
 
     added_details = []
     while True:
