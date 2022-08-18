@@ -153,8 +153,8 @@ def generate_row(row, added_details, country_index_location, country_format):
 
     # finds the matching country in the list and generates a new row with selected user details
     for i in range(1, data_length(country_data)):
-        if str(country_data[i][country_format-1]) == str(user_data[row][country_index_location]):
-            # (country_data[i][country_format - 1], end="")
+        if country_data[i][country_format-1].upper() == user_data[row][country_index_location].upper():
+            # print(country_data[i][country_format - 1], end="")
             # print(user_data[row][country_index_location], end="")
             # print(" Success! ", end="")
             new_row = current_row
@@ -181,7 +181,7 @@ def check_country_existence(country_index_location, country_format):
     total_matching_countries = 0
     for i in range(1, data_length(country_data)):
         for j in range(1, data_length(user_data)):
-            if country_data[i][country_format-1] == user_data[j][country_index_location]:
+            if country_data[i][country_format-1].upper() == user_data[j][country_index_location].upper():
                 total_matching_countries += 1
     if total_matching_countries > 0:
         return True, total_matching_countries
