@@ -10,6 +10,7 @@ user_data = []
 
 # reads reference data
 def reference_read():
+
     # default path
     path = "region_data.csv"
 
@@ -23,7 +24,11 @@ def reference_read():
             # if file not found opens box to let user enter their own path
             directory = os.getcwd()
             print(f"File not found in {directory}\{path}, please input new file location")
-            path = easygui.fileopenbox(msg="Please enter valid file location ", default='*', filetypes=["*.csv"])
+            path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
+            if check_file_type(path):
+                break
+            else:
+                print(f"Unsupported filetype \n")
         else:
             break
 
@@ -54,7 +59,7 @@ def data_read():
 
 # main
 def run():
-    print("Opening reference data")
+    print("Opening reference data\n")
     reference_read()
     print("Reference data success\n\n")
     print("Opening user data")
@@ -89,10 +94,10 @@ def run():
         else:
             country_exists, total_matching = check_country_existence(country_index_location, country_format)
             if country_exists:
-                print(f"Successfully matched {total_matching} countries out of {data_length(user_data)-1} items in the data set\n\n")
+                print(f"\nSuccessfully matched {total_matching} countries out of {data_length(user_data)-1} items in the data set\n\n")
                 break
             else:
-                sys.exit("No matching countries found for given index.")
+                sys.exit("\nNo matching countries found for given index.")
 
     print("What would you like to add to your data set?\n")
     print("Note - Items will be added in the order selected\n")
@@ -196,12 +201,14 @@ def check_country_existence(country_index_location, country_format):
 
 
 def check_file_type(path):
-
-    user_file = path.split(".")
-    if user_file[-1] == "csv":
-        return True
-
-    return False
+    try:
+        user_file = path.split(".")
+        if user_file[-1] == "csv":
+            return True
+    except AttributeError:
+        sys.exit("Quit Successfully")
+    else:
+        return False
 
 
 # Obtains length of provided data
