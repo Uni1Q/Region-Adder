@@ -124,6 +124,7 @@ def run():
         except ValueError:
             print("Wrong value")
 
+    print("\nGenerating new csv file\n")
     region_adder(added_details, country_index_location, country_format)
 
     print("\nOperation complete! Thanks for using my program")
@@ -144,7 +145,7 @@ def region_adder(added_details, country_index_location, country_format):
         for i in range(1, data_length(user_data)):
             new_row, found_data = generate_row(i, added_details, country_index_location, country_format)
             if not found_data:
-                print(f"No matching country found in line {i}")
+                print(f"No matching country found in line {i}, country name in user data {user_data[i][country_index_location]}")
                 fail_count += 1
             writer.writerow(new_row)
 
