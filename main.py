@@ -133,7 +133,7 @@ def region_adder(added_details, country_index_location, country_format):
     fail_count = 0
 
     # adds the data to the new csv file
-    with open("new_data.csv", "w") as write_file:
+    with open("new_data.csv", "w", newline="") as write_file:
         writer = csv.writer(write_file)
         writer.writerow(header)
 
