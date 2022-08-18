@@ -31,10 +31,9 @@ def reference_read():
 # reads user data
 def data_read():
 
-    # hard coded path for csv file
-    path = "C:/Users/rokas/Desktop/ds_salaries.csv"
+    # path = "C:/Users/rokas/Desktop/ds_salaries.csv"
 
-    # path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
+    path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
 
     while True:
         try:
