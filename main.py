@@ -101,15 +101,16 @@ def run():
 
     print("What would you like to add to your data set?\n")
     print("Note - Items will be added in the order selected\n")
-    print("Full name        (Portugal)          [1]")
-    print("Alpha-2          (AT)                [2]")
-    print("Alpha-3          (BGR)               [3]")
-    print("Country Code     (208)               [4]")
-    print("ISO-3166-2       (ISO 3166-2:DO)     [5]")
-    print("Region           (Oceania)           [6]")
-    print("Sub-Region       (South America)     [7]")
-    print("Region Code      (009)               [8]")
-    print("Sub-Region Code  (154)               [9]")
+    print("Full name            (Portugal)          [1]")
+    print("Alpha-2              (AT)                [2]")
+    print("Alpha-3              (BGR)               [3]")
+    print("Country Code         (208)               [4]")
+    print("ISO-3166-2           (ISO 3166-2:DO)     [5]")
+    print("Region               (Oceania)           [6]")
+    print("Sub-Region           (South America)     [7]")
+    print("Intermediate-region  (Caribbean)         [8]")
+    print("Region Code          (009)               [9]")
+    print("Sub-Region Code      (154)               [10]")
     print("Quit             (Quit)              [0]\n")
 
     added_details = []
@@ -118,7 +119,7 @@ def run():
             user_choice = int(input("User Input: "))
             if user_choice == 0:
                 break
-            elif user_choice in range(1, 10):
+            elif user_choice in range(1, 11):
                 if user_choice-1 in added_details:
                     print("Item is already in the list")
                 else:
