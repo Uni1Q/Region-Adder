@@ -3,12 +3,14 @@ import sys
 import easygui
 import os
 
-#generates a list to be populated with selected csv files
+# generates a list to be populated with selected csv files
 country_data = []
 user_data = []
 
 
+# reads reference data
 def reference_read():
+    # default path
     path = "region_data.csv"
 
     while True:
@@ -18,6 +20,7 @@ def reference_read():
                 for item in reader:
                     country_data.append(item)
         except FileNotFoundError:
+            # if file not found opens box to let user enter their own path
             directory = os.getcwd()
             print(f"File not found in {directory}\{path}, please input new file location")
             path = easygui.fileopenbox(msg="Please enter valid file location ", default='*', filetypes=["*.csv"])
@@ -25,8 +28,10 @@ def reference_read():
             break
 
 
+# reads user data
 def data_read():
 
+    # hard coded path for csv file
     path = "C:/Users/rokas/Desktop/ds_salaries.csv"
 
     # path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
@@ -45,22 +50,23 @@ def data_read():
             break
 
 
+# main
 def run():
     print("Opening reference data")
     reference_read()
     print("Reference data success\n\n")
-    print("Opening change data")
+    print("Opening user data")
     data_read()
     length = data_length(user_data)
 
     print(f"There are {length-1} items in the data set")
-    print("Change data success\n\n")
-    print("What format are the countries in your .csv file?")
-    print("Full name (Brazil) [1]")
-    print("Alpha-2 (PL) [2]")
-    print("Alpha-3 (LTU) [3]")
-    print("Country Code (050) [4]")
-    print("ISO-3166-2 (ISO 3166-2:BE) [5]")
+    print("User data success\n\n")
+    print("What format are the countries in your .csv file?\n")
+    print("Full name        (Brazil)            [1]")
+    print("Alpha-2          (PL)                [2]")
+    print("Alpha-3          (LTU)               [3]")
+    print("Country Code     (050)               [4]")
+    print("ISO-3166-2       (ISO 3166-2:BE)     [5]")
 
     while True:
         try:
@@ -106,23 +112,74 @@ def run():
             if user_choice == 0:
                 break
             elif user_choice in range(1, 10):
-                if user_choice in added_details:
+                if user_choice-1 in added_details:
                     print("Item is already in the list")
                 else:
-                    added_details.append(user_choice)
+                    added_details.append(user_choice-1)
             else:
                 print("Invalid Input")
 
         except ValueError:
             print("Wrong value")
 
-    region_adder()
+    region_adder(added_details, country_index_location, country_format)
+
+    print("\nOperation complete! Thanks for using my program")
 
 
-def region_adder():
-    pass
+# Makes a new csv file containing old data and selected new data
+def region_adder(added_details, country_index_location, country_format):
+
+    header = generate_header(added_details)
+    fail_count = 0
+
+    # adds the data to the new csv file
+    with open("new_data.csv", "w") as write_file:
+        writer = csv.writer(write_file)
+        writer.writerow(header)
+
+        # generates a new line with selected options
+        for i in range(1, data_length(user_data)):
+            new_row, found_data = generate_row(i, added_details, country_index_location, country_format)
+            if not found_data:
+                print(f"No matching country found in line {i}")
+                fail_count += 1
+            writer.writerow(new_row)
+
+    if fail_count > 0:
+        print(f"{fail_count} countries couldn't be completed")
 
 
+def generate_row(row, added_details, country_index_location, country_format):
+
+    current_row = user_data[row]
+
+    # finds the matching country in the list and generates a new row with selected user details
+    for i in range(1, data_length(country_data)):
+        if str(country_data[i][country_format-1]) == str(user_data[row][country_index_location]):
+            # (country_data[i][country_format - 1], end="")
+            # print(user_data[row][country_index_location], end="")
+            # print(" Success! ", end="")
+            new_row = current_row
+            for item in added_details:
+                new_row.append(country_data[i][item])
+            return new_row, True
+
+    return current_row, False
+
+
+# generates a header
+def generate_header(added_details):
+
+    header = user_data[0]
+
+    for item in added_details:
+        header.append(country_data[0][item])
+
+    return header
+
+
+# Checks if countries exist for given index
 def check_country_existence(country_index_location, country_format):
     total_matching_countries = 0
     for i in range(1, data_length(country_data)):
@@ -135,6 +192,7 @@ def check_country_existence(country_index_location, country_format):
         return False, total_matching_countries
 
 
+# Obtains length of provided data
 def data_length(data):
 
     length = len(data)
