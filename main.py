@@ -31,7 +31,12 @@ def reference_read():
 # reads user data
 def data_read():
 
-    path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
+    while True:
+        path = easygui.fileopenbox(msg="Please enter file location ", default='*', filetypes=["*.csv"])
+        if check_file_type(path):
+            break
+        else:
+            print("Unsupported filetype.\n")
 
     while True:
         try:
@@ -187,6 +192,15 @@ def check_country_existence(country_index_location, country_format):
         return True, total_matching_countries
     else:
         return False, total_matching_countries
+
+
+def check_file_type(path):
+
+    user_file = path.split(".")
+    if user_file[-1] == "csv":
+        return True
+
+    return False
 
 
 # Obtains length of provided data
